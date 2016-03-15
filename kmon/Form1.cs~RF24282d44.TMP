@@ -1,0 +1,156 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace kmon
+{
+    public partial class frmMain : Form
+    {
+
+        public class Server
+        {
+            //Server name
+            public string strServerName { get; set; }
+            //Ping monitoring 
+            public bool bPing { get; set; }
+            //TCP Ports
+            public int[] intPort = new int[5];            
+        }
+
+        //Initialize a list of server objects
+        List<Server> srvServer = new List<Server>();
+        private bool bMonitor = false;
+
+        public frmMain()
+        {
+            InitializeComponent();
+            btnMonitor.BackColor = System.Drawing.Color.Red;
+            btnMonitor.Text = "Not Monitoring";
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            frmAddServer frm2 = new frmAddServer();
+            frm2.ShowDialog();
+            //Prevent duplicates
+            if (frmAddServer.strServerName == null || frmAddServer.strServerName == "") return;            
+            if (!lbServers.Items.Contains(frmAddServer.strServerName))
+            {
+                lbServers.Items.Add(frmAddServer.strServerName);
+                srvServer.Add(new Server { strServerName = frmAddServer.strServerName });
+            }
+            else
+            {
+                MessageBox.Show("Duplicate entry. Please re-enter.", "kmon");
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            for (int intCounter = lbServers.SelectedIndices.Count - 1; intCounter >= 0; intCounter--)
+            {
+                int intIndex = lbServers.SelectedIndices[intCounter];
+                lbServers.Items.RemoveAt(intIndex);
+                srvServer.RemoveAt(intIndex);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < srvServer.Count; i++)
+            {
+                MessageBox.Show(srvServer[i].strServerName);
+            }
+            if (bMonitor)
+            {
+                bMonitor = false;
+                btnMonitor.BackColor = System.Drawing.Color.Red;
+                btnMonitor.Text = "Not Monitoring";
+                timer1.Enabled = false;
+            }
+            else
+            {
+                bMonitor = true;
+                btnMonitor.BackColor = System.Drawing.Color.Green;
+                btnMonitor.Text = "Monitoring";
+                timer1.Enabled = true;
+            }
+        }
+
+        private void tbInterval_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int intTimeInterval = Convert.ToInt32(tbInterval.Text.Trim());
+
+            }
+            catch (Exception)
+            {
+                tbInterval.Text = "5";
+            }
+            timer1.Interval = Convert.ToInt32(tbInterval.Text.Trim()) * 1000;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            MessageBox.Show("sup!");
+        }
+
+        private void lbServers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show("You clicked on " + lbServers.SelectedItem.ToString());
+            try
+            {
+                tbPort1.Text = srvServer[lbServers.SelectedIndex].intPort[0].ToString();
+            }
+            catch (Exception)
+            { }
+        }
+
+        private void tbPort1_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if ((intCheck > 1) || (intCheck == 0)) {
+                tbPort1.Text = "";
+            }
+            //srvServer[lbServers.SelectedIndex].intPort[0] = Convert.ToInt32(tbPort1.Text);
+            srvServer[lbServers.SelectedIndex].intPort[0] = 2;
+        }
+
+        private void tbPort2_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if ((intCheck > 1) || (intCheck == 0))
+            {
+                tbPort2.Text = "";
+            }
+        }
+
+        private void tbPort3_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if ((intCheck > 1) || (intCheck == 0))
+            {
+                tbPort3.Text = "";
+            }
+        }
+
+        private void tbPort4_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if ((intCheck > 1) || (intCheck == 0))
+            {
+                tbPort4.Text = "";
+            }
+        }
+
+        private void tbPort5_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if ((intCheck > 1) || (intCheck == 0))
+            {
+                tbPort5.Text = "";
+            }        
+        }
+    }
+}

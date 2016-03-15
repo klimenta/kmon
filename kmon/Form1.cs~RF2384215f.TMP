@@ -1,0 +1,63 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+
+namespace kmon
+{
+    public partial class frmMain : Form
+    {
+
+        public class Server
+        {
+            //Server name
+            public string strServerName { get; set; }
+            //Ping monitoring 
+            public bool bPing { get; set; }
+            //TCP Ports
+            public int[] intPort;            
+        }
+
+        List<Server> srvServer = new List<Server>();
+
+        public frmMain()
+        {
+            InitializeComponent();
+        }
+
+
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            frmAddServer frm2 = new frmAddServer();
+            frm2.ShowDialog();
+            //Prevent duplicates
+            if (!lbServers.Items.Contains(frmAddServer.strServerName))
+            {
+                lbServers.Items.Add(frmAddServer.strServerName);
+                srvServer.Add(new Server { strServerName = frmAddServer.strServerName });
+            }
+            else
+            {
+                MessageBox.Show("Duplicate entry. Please re-enter.", "kmon");
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            for (int intCounter = lbServers.SelectedIndices.Count - 1; intCounter >= 0; intCounter--)
+            {
+                int intIndex = lbServers.SelectedIndices[intCounter];
+                lbServers.Items.RemoveAt(intIndex);
+                srvServer.RemoveAt(intIndex);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < srvServer.Count; i++)
+            {
+                MessageBox.Show(srvServer[i].strServerName);
+            }
+        }
+    }
+}

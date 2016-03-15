@@ -1,0 +1,59 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace kmon
+{
+    public partial class frmMain : Form
+    {
+
+        public class Server
+        {
+            public string strServerName { get; set; }
+            public bool bPing { get; set; }
+            //public int[] intPort = new int[5];            
+        }
+
+        List<Server> srvServer = new List<Server>();
+
+        public frmMain()
+        {
+            InitializeComponent();
+        }
+
+
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            frmAddServer frm2 = new frmAddServer();
+            frm2.ShowDialog();
+            lbServers.Items.Add(frmAddServer.strServerName);
+            srvServer.Add(new Server { strServerName = frmAddServer.strServerName });
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            for (int intCounter = lbServers.SelectedIndices.Count - 1; intCounter >= 0; intCounter--)
+            {
+                int k = lbServers.SelectedIndices[intCounter];
+                lbServers.Items.RemoveAt(lbServers.SelectedIndices[intCounter]);
+                //MessageBox.Show(k.ToString());
+                srvServer.RemoveAt(k);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < srvServer.Count; i++)
+            {
+                MessageBox.Show(srvServer[i].strServerName);
+            }
+        }
+    }
+}

@@ -1,0 +1,357 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Net.NetworkInformation;
+using System.Threading;
+
+
+namespace kmon
+{
+    public partial class frmMain : Form
+    {
+
+        public class Server
+        {
+            //Server name
+            public string strServerName { get; set; }
+            //Ping monitoring 
+            public bool bPing { get; set; }
+            //TCP Ports
+            public int intPort1;
+            public int intPort2;
+            public int intPort3;
+            public int intPort4;
+            public int intPort5;
+        }
+
+        //Initialize a list of server objects
+        List<Server> srvServer = new List<Server>();
+        private bool bMonitor = false;
+        
+        public frmMain()
+        {
+            InitializeComponent();
+            btnMonitor.BackColor = System.Drawing.Color.Red;
+            btnMonitor.Text = "Not Monitoring";
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            frmAddServer frm2 = new frmAddServer();
+            frm2.ShowDialog();
+            //Prevent duplicates
+            if (frmAddServer.strServerName == null || frmAddServer.strServerName == "") return;
+            if (!lbServers.Items.Contains(frmAddServer.strServerName))
+            {
+
+                lbServers.Items.Add(frmAddServer.strServerName);
+
+                srvServer.Add(new Server { strServerName = frmAddServer.strServerName,
+                    bPing = false,
+                    intPort1 = 0,
+                    intPort2 = 0,
+                    intPort3 = 0,
+                    intPort4 = 0,
+                    intPort5 = 0});
+            }
+            else
+            {
+                MessageBox.Show("Duplicate entry. Please re-enter.", "kmon");
+            }            
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            for (int intCounter = lbServers.SelectedIndices.Count - 1; intCounter >= 0; intCounter--)
+            {
+                int intIndex = lbServers.SelectedIndices[intCounter];
+                lbServers.Items.RemoveAt(intIndex);
+                srvServer.RemoveAt(intIndex);
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (bMonitor)
+            {
+                bMonitor = false;
+                btnMonitor.BackColor = System.Drawing.Color.Red;
+                btnMonitor.Text = "Not Monitoring";
+                timer1.Enabled = false;
+            }
+            else
+            {
+                bMonitor = true;
+                btnMonitor.BackColor = System.Drawing.Color.Green;
+                btnMonitor.Text = "Monitoring";
+                timer1.Enabled = true;
+            }
+        }
+
+        private void tbInterval_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int intTimeInterval = Convert.ToInt32(tbInterval.Text.Trim());
+
+            }
+            catch (Exception)
+            {
+                tbInterval.Text = "5";
+            }
+            timer1.Interval = Convert.ToInt32(tbInterval.Text.Trim()) * 1000;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {            
+            for (int i = 0; i < srvServer.Count; i++)
+            {
+                //MessageBox.Show(srvServer[i].strServerName);
+                bool bPingable = false;
+                /*
+                Ping pinger = new Ping();
+                try
+                {
+                    PingReply prReply = pinger.Send(srvServer[i].strServerName);
+                    bPingable = (prReply.Status == IPStatus.Success);
+                }
+                catch (PingException ex)
+                {
+                    rtbLog.AppendText(ex.Message);
+                }
+                rtbLog.AppendText(srvServer[i].strServerName + " " + bPingable.ToString() + Environment. NewLine);
+                */
+                string who = srvServer[i].strServerName;
+                AutoResetEvent waiter = new AutoResetEvent(false);
+                Ping pingSender = new Ping();
+                pingSender.PingCompleted += new PingCompletedEventHandler(PingCompletedCallback);
+                string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+                byte[] buffer = Encoding.ASCII.GetBytes(data);
+
+                // Wait 2 seconds for a reply.
+                int timeout = 2000;
+                // Set options for transmission:
+                // The data can go through 64 gateways or routers
+                // before it is destroyed, and the data packet
+                // cannot be fragmented.
+                PingOptions options = new PingOptions(64, true);
+
+                Console.WriteLine("Time to live: {0}", options.Ttl);
+                Console.WriteLine("Don't fragment: {0}", options.DontFragment);
+
+                // Send the ping asynchronously.
+                // Use the waiter as the user token.
+                // When the callback completes, it can wake up this thread.
+                pingSender.SendAsync(who, timeout, buffer, options, waiter);
+
+                // Prevent this example application from ending.
+                // A real application should do something useful
+                // when possible.
+                waiter.WaitOne();
+            }
+        }
+
+
+        private static void PingCompletedCallback(object sender, PingCompletedEventArgs e)
+        {
+            // If the operation was canceled, display a message to the user.
+            if (e.Cancelled)
+            {
+                Console.WriteLine("Ping canceled.");
+
+                // Let the main thread resume. 
+                // UserToken is the AutoResetEvent object that the main thread 
+                // is waiting for.
+                ((AutoResetEvent)e.UserState).Set();
+            }
+
+            // If an error occurred, display the exception to the user.
+            if (e.Error != null)
+            {
+                Console.WriteLine("Ping failed:");
+                Console.WriteLine(e.Error.ToString());
+
+                // Let the main thread resume. 
+                ((AutoResetEvent)e.UserState).Set();
+            }
+
+            PingReply reply = e.Reply;
+
+            DisplayReply(reply);
+
+            // Let the main thread resume.
+            ((AutoResetEvent)e.UserState).Set();
+        }
+
+        public static void DisplayReply(PingReply reply)
+        {
+            if (reply == null)
+                return;
+
+            Console.WriteLine("ping status: {0}", reply.Status);
+            if (reply.Status == IPStatus.Success)
+            {
+                Console.WriteLine("Address: {0}", reply.Address.ToString());
+                Console.WriteLine("RoundTrip time: {0}", reply.RoundtripTime);
+                Console.WriteLine("Time to live: {0}", reply.Options.Ttl);
+                Console.WriteLine("Don't fragment: {0}", reply.Options.DontFragment);
+                Console.WriteLine("Buffer size: {0}", reply.Buffer.Length);
+            }
+        }
+
+        private void lbServers_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //MessageBox.Show("You clicked on " + lbServers.SelectedItem.ToString());
+            try
+            {
+                tbPort1.Text = srvServer[lbServers.SelectedIndex].intPort1.ToString();
+                tbPort2.Text = srvServer[lbServers.SelectedIndex].intPort2.ToString();
+                tbPort3.Text = srvServer[lbServers.SelectedIndex].intPort3.ToString();
+                tbPort4.Text = srvServer[lbServers.SelectedIndex].intPort4.ToString();
+                tbPort5.Text = srvServer[lbServers.SelectedIndex].intPort5.ToString();
+                cbPing.Checked = srvServer[lbServers.SelectedIndex].bPing;
+            }
+            catch (Exception)
+            { }
+            
+        }
+
+        private void tbPort1_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if (lbServers.SelectedIndex == -1)
+            {
+                MessageBox.Show("You have to select a server on the left side", "Error");
+                return;
+            }
+            try
+            {
+                int intPort1 = Convert.ToInt32(tbPort1.Text.Trim());
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            if (tbPort1.Text == null || tbPort1.Text == "") return;
+            if ((intCheck > 1) || (intCheck == 0)) {
+                tbPort1.Text = "0";
+            }
+            srvServer[lbServers.SelectedIndex].intPort1 = Convert.ToInt32(tbPort1.Text);            
+        }
+
+        private void tbPort2_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if (lbServers.SelectedIndex == -1)
+            {
+                MessageBox.Show("You have to select a server on the left side", "Error");
+                return;
+            }
+            try
+            {
+                int intPort2 = Convert.ToInt32(tbPort2.Text.Trim());
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            if (tbPort2.Text == null || tbPort2.Text == "") return;
+            if ((intCheck > 1) || (intCheck == 0))
+            {
+                tbPort2.Text = "0";
+            }
+            srvServer[lbServers.SelectedIndex].intPort2 = Convert.ToInt32(tbPort2.Text);
+        }
+
+        private void tbPort3_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if (lbServers.SelectedIndex == -1)
+            {
+                MessageBox.Show("You have to select a server on the left side", "Error");
+                return;
+            }
+            try
+            {
+                int intPort3 = Convert.ToInt32(tbPort1.Text.Trim());
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            if (tbPort3.Text == null || tbPort3.Text == "") return;
+            if ((intCheck > 1) || (intCheck == 0))
+            {
+                tbPort3.Text = "0";
+            }
+            srvServer[lbServers.SelectedIndex].intPort3 = Convert.ToInt32(tbPort3.Text);
+        }
+
+        private void tbPort4_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if (lbServers.SelectedIndex == -1)
+            {
+                MessageBox.Show("You have to select a server on the left side", "Error");
+                return;
+            }
+            try
+            {
+                int intPort4 = Convert.ToInt32(tbPort1.Text.Trim());
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            if (tbPort4.Text == null || tbPort1.Text == "") return;
+            if ((intCheck > 1) || (intCheck == 0))
+            {
+                tbPort4.Text = "0";
+            }
+            srvServer[lbServers.SelectedIndex].intPort4 = Convert.ToInt32(tbPort4.Text);
+        }
+
+        private void tbPort5_TextChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if (lbServers.SelectedIndex == -1)
+            {
+                MessageBox.Show("You have to select a server on the left side", "Error");
+                return;
+            }
+            try
+            {
+                int intPort5 = Convert.ToInt32(tbPort1.Text.Trim());
+            }
+            catch (Exception)
+            {
+                return;
+            }
+            if (tbPort5.Text == null || tbPort5.Text == "") return;
+            if ((intCheck > 1) || (intCheck == 0))
+            {
+                tbPort5.Text = "0";
+            }
+            srvServer[lbServers.SelectedIndex].intPort5 = Convert.ToInt32(tbPort5.Text);
+        }
+
+        private void tbPort1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Return))
+            {
+                this.SelectNextControl((Control)sender, true, true, true, true);
+            }
+        }
+
+        private void cbPing_CheckedChanged(object sender, EventArgs e)
+        {
+            int intCheck = lbServers.SelectedIndices.Count;
+            if (lbServers.SelectedIndex == -1)
+            {
+                MessageBox.Show("You have to select a server on the left side", "Error");
+                return;
+            }
+            srvServer[lbServers.SelectedIndex].bPing = cbPing.Checked;       
+        }
+    }
+}
