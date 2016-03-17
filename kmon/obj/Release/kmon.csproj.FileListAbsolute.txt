@@ -1,0 +1,9 @@
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\bin\Release\kmon.exe.config
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\bin\Release\kmon.exe
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\bin\Release\kmon.pdb
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Release\kmon.frmMain.resources
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Release\kmon.frmAddServer.resources
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Release\kmon.Properties.Resources.resources
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Release\kmon.csproj.GenerateResource.Cache
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Release\kmon.exe
+C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Release\kmon.pdb

@@ -46,22 +46,16 @@
             this.lblPort6 = new System.Windows.Forms.Label();
             this.lblTimeout = new System.Windows.Forms.Label();
             this.tbTimeout = new System.Windows.Forms.TextBox();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnCopy = new System.Windows.Forms.Button();
             this.btnClearLog = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
-            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.restoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1.SuspendLayout();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // lbServers
             // 
             this.lbServers.FormattingEnabled = true;
-            this.lbServers.Location = new System.Drawing.Point(16, 41);
+            this.lbServers.Location = new System.Drawing.Point(16, 50);
             this.lbServers.Name = "lbServers";
             this.lbServers.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
             this.lbServers.Size = new System.Drawing.Size(133, 134);
@@ -144,7 +138,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(16, 12);
+            this.btnAdd.Location = new System.Drawing.Point(15, 21);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(23, 23);
             this.btnAdd.TabIndex = 17;
@@ -154,7 +148,7 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(45, 12);
+            this.btnRemove.Location = new System.Drawing.Point(40, 21);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(23, 23);
             this.btnRemove.TabIndex = 18;
@@ -165,9 +159,9 @@
             // btnMonitor
             // 
             this.btnMonitor.BackColor = System.Drawing.SystemColors.Control;
-            this.btnMonitor.Location = new System.Drawing.Point(293, 126);
+            this.btnMonitor.Location = new System.Drawing.Point(335, 133);
             this.btnMonitor.Name = "btnMonitor";
-            this.btnMonitor.Size = new System.Drawing.Size(200, 51);
+            this.btnMonitor.Size = new System.Drawing.Size(157, 51);
             this.btnMonitor.TabIndex = 19;
             this.btnMonitor.UseVisualStyleBackColor = false;
             this.btnMonitor.Click += new System.EventHandler(this.btnMonitor_Click);
@@ -175,9 +169,9 @@
             // rtbLog
             // 
             this.rtbLog.HideSelection = false;
-            this.rtbLog.Location = new System.Drawing.Point(16, 181);
+            this.rtbLog.Location = new System.Drawing.Point(16, 190);
             this.rtbLog.Name = "rtbLog";
-            this.rtbLog.Size = new System.Drawing.Size(477, 149);
+            this.rtbLog.Size = new System.Drawing.Size(477, 140);
             this.rtbLog.TabIndex = 20;
             this.rtbLog.Text = "";
             // 
@@ -211,7 +205,7 @@
             // btnCopy
             // 
             this.btnCopy.Image = global::kmon.Properties.Resources.copy1;
-            this.btnCopy.Location = new System.Drawing.Point(247, 135);
+            this.btnCopy.Location = new System.Drawing.Point(247, 144);
             this.btnCopy.Name = "btnCopy";
             this.btnCopy.Size = new System.Drawing.Size(40, 40);
             this.btnCopy.TabIndex = 26;
@@ -223,7 +217,7 @@
             // btnClearLog
             // 
             this.btnClearLog.Image = global::kmon.Properties.Resources.Clear;
-            this.btnClearLog.Location = new System.Drawing.Point(201, 135);
+            this.btnClearLog.Location = new System.Drawing.Point(201, 144);
             this.btnClearLog.Name = "btnClearLog";
             this.btnClearLog.Size = new System.Drawing.Size(40, 40);
             this.btnClearLog.TabIndex = 25;
@@ -235,7 +229,7 @@
             // btnSelectAll
             // 
             this.btnSelectAll.Image = global::kmon.Properties.Resources.SelectAll;
-            this.btnSelectAll.Location = new System.Drawing.Point(155, 135);
+            this.btnSelectAll.Location = new System.Drawing.Point(155, 144);
             this.btnSelectAll.Name = "btnSelectAll";
             this.btnSelectAll.Size = new System.Drawing.Size(40, 40);
             this.btnSelectAll.TabIndex = 24;
@@ -243,44 +237,6 @@
             this.toolTip1.SetToolTip(this.btnSelectAll, "Select All");
             this.btnSelectAll.UseVisualStyleBackColor = true;
             this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
-            // 
-            // notifyIcon1
-            // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
-            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "kmon";
-            this.notifyIcon1.Visible = true;
-            this.notifyIcon1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon1_MouseDoubleClick);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.restoreToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.exitToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(114, 54);
-            // 
-            // restoreToolStripMenuItem
-            // 
-            this.restoreToolStripMenuItem.Image = global::kmon.Properties.Resources.restore_icon;
-            this.restoreToolStripMenuItem.Name = "restoreToolStripMenuItem";
-            this.restoreToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
-            this.restoreToolStripMenuItem.Text = "Restore";
-            this.restoreToolStripMenuItem.Click += new System.EventHandler(this.restoreToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(110, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Image = global::kmon.Properties.Resources.close_icon;
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -311,9 +267,7 @@
             this.MaximizeBox = false;
             this.Name = "frmMain";
             this.Text = "kmon";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
-            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -341,11 +295,6 @@
         private System.Windows.Forms.Button btnClearLog;
         private System.Windows.Forms.Button btnCopy;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem restoreToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 

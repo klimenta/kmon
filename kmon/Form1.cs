@@ -10,19 +10,26 @@ using System.Text;
 namespace kmon
 {
 
-
     public partial class frmMain : Form
     {
-
+        //All checks are running as background processes, otherwise the GUI would be very unresponsive
         private BackgroundWorker bw = new BackgroundWorker();
+        //Ping average in ms
         double dPingTimeAverage;
+        //Holds the status of each TCP port (open/closed)
         bool bCheckOpenTCPPort;
+        //kmon can monitor up to 6 ports. You can probably go with more
         const int iNumberOfPorts = 6;
+        //A list of Text Boxes for the ports
         List<TextBox> tbPort = new List<TextBox>();
+        //Temp variable/counter
         public int intCounter = 0;
-        int intTimeout = 50; //Default = 50ms
-        int intTimeInterval = 5000; //Default 5sec
+        //Default timeout for ping or port checks before kmon gives up
+        int intTimeout = 100; //Default = 100 ms
+        //Time interval for all checks. kmon will do it's job for 5 secs then pause for 5 secs
+        int intTimeInterval = 5000; //Default 5 sec
 
+        //Checks if the TCP port is open or closed
         public static bool CheckOpenTCPPort(string host, int port, int intTimeout)
         {
             bool bOpenPort = false;
@@ -60,6 +67,8 @@ namespace kmon
             return bOpenPort;
         }
 
+        //Returns the ping time average. If the return value is negative 1 (-1), it means the host is not reachable.
+        //It doesn't necessarily means it's down. It means, ICMP protocolo can not be established between kmon and the end host.
         public static double PingTimeAverage(string host, int timeout)
         {
             Ping pingSender = new Ping();
@@ -77,11 +86,12 @@ namespace kmon
             { return -1.0; }
         }
 
+        //A class for each monitored server
         public class Server
         {
             //Server name
             public string strServerName { get; set; }
-            //Ping monitoring 
+            //Ping monitoring (y/n)
             public bool bPing { get; set; }
             //TCP Ports
             public List<int> lstPorts = new List<int>();
@@ -89,6 +99,7 @@ namespace kmon
 
         //Initialize a list of server objects
         List<Server> srvServer = new List<Server>();
+        //Toggle for monitoring/not monitoring button
         private bool bMonitor = false;
         
         public frmMain()
@@ -103,8 +114,7 @@ namespace kmon
                 tbPort.Add(newTextBox);
                 tbPort[i].Width = 45;
                 tbPort[i].Height = 20;
-                
-                //tbPort[i].KeyUp += new EventHandler(tbPort_KeyUp);
+                                
                 tbPort[i].TabIndex = i + 10;
                 tbPort[i].Text = "0";
                 tbPort[i].Name = "tbPort" + i.ToString();
@@ -126,6 +136,7 @@ namespace kmon
             bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);            
         }
 
+        //Event when you change the port to be monitored
         protected void tbPort_TextChanged(object sender, EventArgs e)
         {
             int intPort;
@@ -147,8 +158,9 @@ namespace kmon
                 return;
             }
             srvServer[lbServers.SelectedIndex].lstPorts[Convert.ToInt32((sender as TextBox).Tag)] = intPort;            
-        }       
+        }
 
+        //Add server to be monitored
         private void btnAdd_Click(object sender, EventArgs e)
         {
             frmAddServer frm2 = new frmAddServer();
@@ -166,6 +178,7 @@ namespace kmon
             }            
         }
 
+        //Remove server from being monitored
         private void btnRemove_Click(object sender, EventArgs e)
         {
             for (int intCounter = lbServers.SelectedIndices.Count - 1; intCounter >= 0; intCounter--)
@@ -176,9 +189,9 @@ namespace kmon
             }
         }
 
+        //Toggle button monitor/not monitor
         private void btnMonitor_Click(object sender, EventArgs e)
-        {
-            //MessageBox.Show(tbPort[0].Text);
+        {            
             if (bMonitor)
             {
                 bMonitor = false;
@@ -201,6 +214,7 @@ namespace kmon
             }
         }
 
+        //Event when you change the time interval
         private void tbInterval_TextChanged(object sender, EventArgs e)
         {
             try
@@ -213,13 +227,9 @@ namespace kmon
             }
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-        }
-
+        //Event when you select the server from the list of servers
         private void lbServers_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //MessageBox.Show("You clicked on " + lbServers.SelectedItem.ToString());
+        {            
             try
             {               
                 for (int i = 0; i < iNumberOfPorts; i++)
@@ -232,6 +242,7 @@ namespace kmon
             { }            
         }
 
+        //Check mark event ping/not ping
         private void cbPing_CheckedChanged(object sender, EventArgs e)
         {
             int intCheck = lbServers.SelectedIndices.Count;
@@ -243,6 +254,7 @@ namespace kmon
             srvServer[lbServers.SelectedIndex].bPing = cbPing.Checked;       
         }
 
+        //Background process init/cancel
         private void bw_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -255,14 +267,14 @@ namespace kmon
                     break;
                 }
                 else
-                {
-                    // Perform a time consuming operation and report progress.
+                {                    
                     System.Threading.Thread.Sleep(intTimeInterval); //Time interval between each thread
                     worker.ReportProgress(0);
                 }
             }
         }
 
+        //Append log
         private void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if ((e.Cancelled == true))
@@ -283,6 +295,8 @@ namespace kmon
                 rtbLog.AppendText("Done!", Color.Green);
             }
         }
+
+        //Main process for ping/check TCP ports
         private void bw_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             Color cColor;
@@ -332,21 +346,25 @@ namespace kmon
             }
         }
 
+        //Select all in the log
         private void btnSelectAll_Click(object sender, EventArgs e)
         {
             rtbLog.SelectAll();
         }
 
+        //Clear the log
         private void btnClearLog_Click(object sender, EventArgs e)
         {
             rtbLog.Clear();
         }
 
+        //Copy the log to clipboard
         private void btnCopy_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(rtbLog.SelectedRtf, TextDataFormat.Rtf);
         }
 
+        //Event when you change the timeout setting
         private void tbTimeout_TextChanged(object sender, EventArgs e)
         {
             try
@@ -358,9 +376,46 @@ namespace kmon
                 tbTimeout.Text = "100";
             }            
         }
+
+        //Hide the window when minimized
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            if (FormWindowState.Minimized == WindowState)
+                Hide();
+        }
+
+        //Retore the view when the icon is clicked in the tray
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+        }
+
+        //Restore the icon when "restore" option is chosen from the menu
+        private void restoreToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Show();
+            WindowState = FormWindowState.Normal;
+        }
+
+        //Try to close the program when "exit" option is chosen from the menu
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        //Ask for confirmation before the program closes
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to close?", "kmon", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
+        }
     }
 }
 
+//Class to Extend AppendText for RichTextBox control to include the color value
 public static class RichTextBoxExtensions
 {
     public static void AppendText(this RichTextBox box, string text, Color color)
