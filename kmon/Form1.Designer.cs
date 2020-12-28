@@ -310,7 +310,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "frmMain";
-            this.Text = "kmon";
+            this.Text = "kmon v0.0.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.contextMenuStrip1.ResumeLayout(false);

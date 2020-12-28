@@ -17,3 +17,14 @@ C:\Users\klimenta.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\De
 C:\Users\klimenta.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Debug\kmon.pdb
 C:\Users\klimenta.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Debug\kmon.frmMain.resources
 C:\Users\Kliment.ANDREEV\Documents\Visual Studio 2015\Projects\kmon\kmon\obj\Debug\kmon.csprojResolveAssemblyReference.cache
+P:\dotnet\kmon\kmon\bin\Debug\kmon.exe.config
+P:\dotnet\kmon\kmon\bin\Debug\kmon.exe
+P:\dotnet\kmon\kmon\bin\Debug\kmon.pdb
+P:\dotnet\kmon\kmon\obj\Debug\kmon.frmMain.resources
+P:\dotnet\kmon\kmon\obj\Debug\kmon.frmAddServer.resources
+P:\dotnet\kmon\kmon\obj\Debug\kmon.Properties.Resources.resources
+P:\dotnet\kmon\kmon\obj\Debug\kmon.csproj.GenerateResource.cache
+P:\dotnet\kmon\kmon\obj\Debug\kmon.csproj.CoreCompileInputs.cache
+P:\dotnet\kmon\kmon\obj\Debug\kmon.exe
+P:\dotnet\kmon\kmon\obj\Debug\kmon.pdb
+P:\dotnet\kmon\kmon\obj\Debug\kmon.csprojAssemblyReference.cache

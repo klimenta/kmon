@@ -1,22 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kmon", "kmon\kmon.csproj", "{4922825B-52DF-4624-B0D6-B261536430F8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{4922825B-52DF-4624-B0D6-B261536430F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4922825B-52DF-4624-B0D6-B261536430F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4922825B-52DF-4624-B0D6-B261536430F8}.Debug|x64.ActiveCfg = Debug|x64
+		{4922825B-52DF-4624-B0D6-B261536430F8}.Debug|x64.Build.0 = Debug|x64
 		{4922825B-52DF-4624-B0D6-B261536430F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4922825B-52DF-4624-B0D6-B261536430F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4922825B-52DF-4624-B0D6-B261536430F8}.Release|x64.ActiveCfg = Release|x64
+		{4922825B-52DF-4624-B0D6-B261536430F8}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91BD2EA1-BE7E-4EB5-89A7-8B9471361086}
 	EndGlobalSection
 EndGlobal
