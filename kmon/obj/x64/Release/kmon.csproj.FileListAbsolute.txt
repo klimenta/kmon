@@ -8,3 +8,4 @@ P:\dotnet\kmon\kmon\obj\x64\Release\kmon.csproj.GenerateResource.cache
 P:\dotnet\kmon\kmon\obj\x64\Release\kmon.csproj.CoreCompileInputs.cache
 P:\dotnet\kmon\kmon\obj\x64\Release\kmon.exe
 P:\dotnet\kmon\kmon\obj\x64\Release\kmon.pdb
+P:\dotnet\kmon\kmon\obj\x64\Release\kmon.csprojAssemblyReference.cache
